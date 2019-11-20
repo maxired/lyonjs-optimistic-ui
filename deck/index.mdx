@@ -1,0 +1,33 @@
+import { Head, Notes } from 'mdx-deck'
+import { theme } from './theme'
+export const themes = [ theme ]
+
+<Head>
+  <title>LyonJS#64 - Optimistic UI - Graphql Implementation</title>
+</Head>
+
+# LyonJS #64
+## Optimistic UI - part 2
+## Implémentation
+
+---
+## Speakers
+
+Hadrien Tulipe - JS Lead Dev at allocine
+
+Maxence Dalmais - @maxired - Freelance Javascript
+
+<Notes>
+Create speaker notes with the Notes component
+</Notes>
+
+---
+
+import { WrapRootElement } from '../src/apollo/wrap-root-element';
+import Page from '../src/pages';
+
+<WrapRootElement>
+  <Page />
+</WrapRootElement>
+
+<https://github.com/jxnblk/mdx-deck>
