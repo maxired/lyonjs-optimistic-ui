@@ -1,5 +1,3 @@
-// curl -X POST https://gatsby-functions.maxired.now.sh/api/graphql  -d '{"variables": { "id": "123" }, "query": "query Product($id: String!) { product(id: $id){name} }"}' -H "Content-Type: application/json"  -vvv
-
 const {
   graphql,
   buildSchema
@@ -7,41 +5,38 @@ const {
 const cors = require('micro-cors')()
 
 const schema = buildSchema(`
-  type Product {
-    id: String!
-    name: String!
-    price: String!
-  }
-
-  type Order {
-    id: String!
-    customerName: String!
-    deliveryAddress: String!
-    product: Product!
-    quantity: Int!
+  type Vote {
+    _id: ID!
+    count: Int,
+    value: Int,
   }
 
   type Query {
-    product(id: String!): Product
-    order(id: String!): Order
-    test: String
-    date: String
+    vote: Vote
+  }
+
+  type Mutation {
+    addVote : Vote
   }
 `)
 
-const database = require('./_database')
-const resolvers = {
-  test: () => 'hello world',
-  date: () => new Promise(resolve => setTimeout(() => resolve(new Date().toISOString()), 4000)),
-  product: ({ id }) => database.products.get(id),
-  order: async ({ id }) => {
-    const order = await database.orders.get(id)
-    if(!order) return null
+const store = {
+  vote: {
+    _id: 'singleVote',
+    count: 0,
+    value: 0
+  }
+}
 
-    return {
-      ...order,
-      product: () => database.products.get(order.productId)
-    }
+const seconds = (duration) => new Promise((resolve) => setTimeout(resolve, duration * 1000))
+
+const resolvers = {
+  vote: () => store.vote,
+  addVote: async () => {
+    await seconds(3)
+    store.vote.count +=1;
+    store.vote.value +=5;
+    return store.vote
   }
 }
 

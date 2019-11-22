@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
+    "@code-surfer/themes": "^3.0.0-beta.1",
+    "@emotion/styled": "^10.0.23",
     "apollo-boost": "^0.4.4",
     "apollo-client": "^2.6.4",
     "gatsby": "^2.0.19",
@@ -18,11 +20,14 @@
     "react-helmet": "^5.2.0"
   },
   "devDependencies": {
-    "@now/node": "^0.11.0"
+    "@now/node": "^0.11.0",
+    "code-surfer": "3.0.0-beta.1",
+    "raw-loader": "^3.1.0"
   },
   "scripts": {
     "start": "mdx-deck deck/index.mdx",
     "dev": "mdx-deck deck/index.mdx --port $PORT",
+    "dev-local": "mdx-deck deck/index.mdx --port 4000",
     "build": "mdx-deck build deck/index.mdx"
   }
 }

@@ -1,6 +1,8 @@
 import { Head, Notes } from 'mdx-deck'
 import { theme } from './theme'
-export const themes = [ theme ]
+import { nightOwl } from "@code-surfer/themes"
+
+export const themes = [nightOwl, ...theme]
 
 <Head>
   <title>LyonJS#64 - Optimistic UI - Graphql Implementation</title>
@@ -11,6 +13,7 @@ export const themes = [ theme ]
 ## Implémentation
 
 ---
+
 ## Speakers
 
 Hadrien Tulipe - JS Lead Dev at allocine
@@ -23,11 +26,54 @@ Create speaker notes with the Notes component
 
 ---
 
-import { WrapRootElement } from '../src/apollo/wrap-root-element';
-import Page from '../src/pages';
+The visual state of the button is triggered into success mode instantly.
 
-<WrapRootElement>
-  <Page />
-</WrapRootElement>
+---
 
-<https://github.com/jxnblk/mdx-deck>
+# Apollo Definition
+
+Optimistic UI is a pattern that you can use to simulate the results of a mutation and update the UI even before receiving a response from the server. Once the response is received from the server, the optimistic result is thrown away and replaced with the actual result.
+
+Optimistic UI provides an easy way to make your UI respond much faster, while ensuring that the data becomes consistent with the actual response when it arrives.
+
+---
+
+import { CodeSurfer } from "code-surfer"
+import { DisplayClaps } from "../src/components/scalarClaps"
+
+<DisplayClaps />
+
+<CodeSurfer>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+</CodeSurfer>
+
+---
+
+import { CodeSurferColumns, Step } from "code-surfer"
+import { Clap } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><Clap /></div>
+</div>
+
+<CodeSurferColumns>
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx file=../src/components/scalarClaps/Clap.js
+  ```
+
+  </Step>
+</CodeSurferColumns>
+
+---
+
+# Going further
+
+https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/
