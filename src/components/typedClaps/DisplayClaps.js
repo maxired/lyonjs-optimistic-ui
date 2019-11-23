@@ -6,7 +6,7 @@ import { Loader } from '../common';
 export const GET_CLAPS = gql`query { claps { _id value } }`;
 
 const DisplayClaps = () => {
-  const { loading, error, data: { claps } = {} } = useQuery(GET_CLAPS)
+  const { loading, error, data: { claps = { value: 0 } } = {} } = useQuery(GET_CLAPS)
 
   if (loading) return <Loader />
 

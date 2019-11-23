@@ -331,6 +331,17 @@ import { ClapAndUpdateOptimisticallyCorrectWithValue } from "../src/components/s
 
 ---
 
+# This mean 2 things
+
+<ul>
+  <Appear>
+    <li>Ids</li>
+    <li>Types</li>
+  </Appear>
+</ul>
+
+---
+
 import {
   DisplayClaps as DisplayTypedClaps,
   Clap as TypedClap
@@ -342,6 +353,38 @@ import {
 </div>
 
 <CodeSurferColumns>
+
+  <Step>
+
+  ```jsx 11:24 title=server file=../api/typedClaps/_handlers.js
+  ```
+  
+  ```jsx file=../src/components/typedClaps/Clap.js
+  ```
+
+  </Step>
+
+  <Step>
+
+  ```jsx 4:9 title=server file=../api/typedClaps/_handlers.js
+  ```
+  
+  ```jsx file=../src/components/typedClaps/Clap.js
+  ```
+
+  </Step>
+
+  <Step>
+
+  ```jsx 27:34 title=server file=../api/typedClaps/_handlers.js
+  ```
+  
+  ```jsx file=../src/components/typedClaps/Clap.js
+  ```
+
+  </Step>
+
+
   <Step>
 
   ```jsx file=../src/components/typedClaps/DisplayClaps.js
@@ -361,6 +404,42 @@ import {
   ```
 
   </Step>
+
+</CodeSurferColumns>
+
+---
+
+import {
+  ClapOptimistically as TypedClapOptimistically
+} from "../src/components/typedClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayTypedClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><TypedClapOptimistically /></div>
+</div>
+
+<CodeSurferColumns>
+
+  <Step>
+
+  ```jsx file=../src/components/typedClaps/DisplayClaps.js
+  ```
+
+  ```jsx file=../src/components/typedClaps/ClapOptimistically.js
+  ```
+
+  </Step>
+
+  <Step>
+
+  ```jsx file=../src/components/typedClaps/DisplayClaps.js
+  ```
+
+  ```jsx 11:23 file=../src/components/typedClaps/ClapOptimistically.js
+  ```
+
+  </Step>
+
 </CodeSurferColumns>
 
 ---

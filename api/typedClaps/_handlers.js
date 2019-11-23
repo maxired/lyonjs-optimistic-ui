@@ -1,3 +1,6 @@
+const seconds = (duration) => new Promise(
+  (resolve) => setTimeout(resolve, duration * 1000))
+
 const store = {
   clap: {
     _id: 'MyClapId',
@@ -5,7 +8,7 @@ const store = {
   }
 }
 
-const schema = buildSchema(`
+const schema = `
   type Claps {
     _id: ID!
     value: Int,
@@ -18,13 +21,13 @@ const schema = buildSchema(`
   type Mutation {
     clap : Claps
   }
-`)
+`
 
 
 const resolvers = {
   claps: () => store.clap,
   clap: async () => {
-    await seconds(3)
+    await seconds(1.5)
     store.clap.value +=1;
     return store.clap
   }
