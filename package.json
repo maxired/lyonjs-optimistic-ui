@@ -28,6 +28,7 @@
     "start": "mdx-deck deck/index.mdx",
     "dev": "mdx-deck deck/index.mdx --port $PORT",
     "dev-local": "mdx-deck deck/index.mdx --port 4000",
-    "build": "mdx-deck build deck/index.mdx"
+    "build": "mdx-deck build deck/index.mdx",
+    "deploy": "now -n lyonjs-optimistic-ui"
   }
 }
