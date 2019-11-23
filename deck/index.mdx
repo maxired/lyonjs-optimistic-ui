@@ -1,6 +1,7 @@
-import { Head, Notes } from 'mdx-deck'
+import { Head, Notes, Appear } from 'mdx-deck'
 import { theme } from './theme'
 import { nightOwl } from "@code-surfer/themes"
+import { CodeSurfer } from "code-surfer"
 
 export const themes = [nightOwl, ...theme]
 
@@ -26,19 +27,37 @@ Create speaker notes with the Notes component
 
 ---
 
-The visual state of the button is triggered into success mode instantly.
+# OptimisticUI simple Definition
+
+<Appear>
+  <div>The visual state of the button is triggered into success mode instantly.</div>
+</Appear>
 
 ---
 
-# Apollo Definition
+# Simple possible optimistic UI example
 
-Optimistic UI is a pattern that you can use to simulate the results of a mutation and update the UI even before receiving a response from the server. Once the response is received from the server, the optimistic result is thrown away and replaced with the actual result.
+<button onClick={() => alert('it works')}>click Me</button>
 
-Optimistic UI provides an easy way to make your UI respond much faster, while ensuring that the data becomes consistent with the actual response when it arrives.
+<CodeSurfer>
+
+  ```jsx
+    <button onClick={() => alert('it works')}>
+      click Me
+    </button>
+  ```
+
+</CodeSurfer>
 
 ---
 
-import { CodeSurfer } from "code-surfer"
+# OptimisticUI Apollo Definition
+
+> Optimistic UI is a pattern that you can use to simulate the results of a mutation and update the UI even before receiving a response from the server. Once the response is received from the server, the optimistic result is thrown away and replaced with the actual result.<br/><br/>
+> Optimistic UI provides an easy way to make your UI respond much faster, while ensuring that the data becomes consistent with the actual response when it arrives.
+
+---
+
 import { DisplayClaps } from "../src/components/scalarClaps"
 
 <DisplayClaps />
@@ -46,6 +65,9 @@ import { DisplayClaps } from "../src/components/scalarClaps"
 <CodeSurfer>
 
   ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx 6,9 file=../src/components/scalarClaps/DisplayClaps.js
   ```
 
 </CodeSurfer>
@@ -70,10 +92,278 @@ import { Clap } from "../src/components/scalarClaps"
   ```
 
   </Step>
+
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx 6,10 file=../src/components/scalarClaps/Clap.js
+  ```
+
+  </Step>
+
 </CodeSurferColumns>
 
 ---
 
+import { ClapAndRefresh } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndRefresh /></div>
+</div>
+
+<CodeSurferColumns>
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx file=../src/components/scalarClaps/ClapAndRefresh.js
+  ```
+
+  </Step>
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx 13 file=../src/components/scalarClaps/ClapAndRefresh.js
+  ```
+
+  </Step>
+</CodeSurferColumns>
+
+<Notes>
+  2 problemes ici: 
+
+   - pas optimistic
+   - une requete reseau en plus
+   - necessite de savoir quel query updater
+
+</Notes>
+
+---
+
+import { ClapAndUpdate } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdate /></div>
+</div>
+
+<CodeSurferColumns>
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx file=../src/components/scalarClaps/ClapAndUpdate.js
+  ```
+
+  </Step>
+
+  <Step>
+
+  ```jsx file=../src/components/scalarClaps/DisplayClaps.js
+  ```
+
+  ```jsx 13:21 file=../src/components/scalarClaps/ClapAndUpdate.js
+  ```
+
+  </Step>
+</CodeSurferColumns>
+
+<Notes>
+cette approche a 3 problèmes.
+Nous verrons que nous ne pourrons pas tous les résoudre, mais il est intéressant de les noter
+
+ - beaucoup de code métier
+ - Obligé de faire 2 opération manuelle sur le cache et de connaitre la query a modifier
+ - Pas Optimistic
+
+</Notes>
+
+---
+
+import { ClapAndUpdateWithValue } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateWithValue /></div>
+</div>
+
+<CodeSurferColumns>
+  <Step>
+
+  ```jsx title=server file=../api/scalarClaps/_handlers.js
+  ```
+
+  ```jsx file=../src/components/scalarClaps/ClapAndUpdateWithValue.js
+  ```
+
+  </Step>
+  <Step>
+
+  ```jsx 13,23:27 title=server file=../api/scalarClaps/_handlers.js
+  ```
+
+  ```jsx 7,13:20 file=../src/components/scalarClaps/ClapAndUpdateWithValue.js
+  ```
+
+  </Step>
+</CodeSurferColumns>
+
+<Notes>
+Cette approche enleve du code métier mais
+ - Obligé de faire opératio manuelle sur le cache, mais a toujours besoin de connaitre la query a updater
+ - Pas optimitic
+</Notes>
+
+---
+<div style={{display: 'flex', width: '100%', flexDirection: 'column', textAlign: 'center', height: '100%' }}>
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateWithValue /></div>
+</div>
+
+<div style={{ color: 'white', backgroundColor: '#011627', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+  <Appear>
+    <div>What you should really use is</div>
+    <div>the <h1>optimisticResponse</h1> Parameter</div>
+  </Appear>
+</div>
+</div>
+
+---
+
+# optimisticResponse
+
+> The Optimistic response parameter is client generated object representing what should be the server response if the mutation succeeed.
+It will be used to update the cache, aka the query result, and so the UI.
+This update will be present only during the mutation. 
+
+---
+
+import { ClapAndUpdateOptimistically } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateOptimistically /></div>
+</div>
+
+<CodeSurfer>
+
+  ```jsx file=../src/components/scalarClaps/ClapAndUpdateOptimistically.js
+  ```
+
+  ```jsx 13:21 file=../src/components/scalarClaps/ClapAndUpdateOptimistically.js
+  ```
+
+</CodeSurfer>
+
+---
+
+import { ClapAndUpdateOptimisticallyWithValue } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateOptimisticallyWithValue /></div>
+</div>
+
+<CodeSurfer>
+
+  ```jsx file=../src/components/scalarClaps/ClapAndUpdateOptimisticallyWithValue.js
+  ```
+
+  ```jsx 13:21 file=../src/components/scalarClaps/ClapAndUpdateOptimisticallyWithValue.js
+  ```
+
+</CodeSurfer>
+
+---
+
+import { ClapAndUpdateOptimisticallyCorrectWithValue } from "../src/components/scalarClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateOptimisticallyCorrectWithValue /></div>
+</div>
+
+<CodeSurfer>
+
+  ```jsx file=../src/components/scalarClaps/ClapAndUpdateOptimisticallyCorrectWithValue.js
+  ```
+
+  ```jsx 11,16:18 file=../src/components/scalarClaps/ClapAndUpdateOptimisticallyCorrectWithValue.js
+  ```
+
+  ```jsx 19:26 file=../src/components/scalarClaps/ClapAndUpdateOptimisticallyCorrectWithValue.js
+  ```
+
+</CodeSurfer>
+
+---
+
+<div style={{position: 'absolute', bottom: '20%' }}>
+  <Appear>
+    <div>Does that mean we have to write every results using the cache and know which queries to update?</div>
+    <h1>No ! You can, but that would be the exact opposite of GraphQL Approach</h1>
+  </Appear>
+</div>
+
+---
+
+<div style={{display: 'flex', width: '100%', flexDirection: 'column', textAlign: 'center', height: '100%' }}>
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><ClapAndUpdateWithValue /></div>
+</div>
+
+<div style={{ color: 'white', backgroundColor: '#011627', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+  <Appear>
+    <div>What you should really use is</div>
+    <div><h1>Normalization</h1></div>
+  </Appear>
+</div>
+</div>
+
+---
+
+import {
+  DisplayClaps as DisplayTypedClaps,
+  Clap as TypedClap
+} from "../src/components/typedClaps"
+
+<div style={{display: 'flex', width: '100%', textAlign: 'center' }}>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center' }}><DisplayTypedClaps /></div>
+  <div style={{flexBasis: '50%', display: 'flex', justifyContent: 'center'}}><TypedClap /></div>
+</div>
+
+<CodeSurferColumns>
+  <Step>
+
+  ```jsx file=../src/components/typedClaps/DisplayClaps.js
+  ```
+
+  ```jsx file=../src/components/typedClaps/Clap.js
+  ```
+
+  </Step>
+
+  <Step>
+
+  ```jsx file=../src/components/typedClaps/DisplayClaps.js
+  ```
+
+  ```jsx 6,10 file=../src/components/typedClaps/Clap.js
+  ```
+
+  </Step>
+</CodeSurferColumns>
+
+---
 # Going further
 
 https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/
